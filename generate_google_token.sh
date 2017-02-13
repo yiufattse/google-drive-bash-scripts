@@ -19,13 +19,13 @@ echo '|'
 echo '| Google Token Generator'
 echo '=================================================='
 echo
-echo "Step 0) If you already have a Project, Client ID and Client Secret, skip to Step 9."
+echo "Step 0) If you already have a Project, Client ID and Client Secret, skip to Step 10."
 echo
 echo -n "Skip (y/n) [n]: "
 read skip
 if [ "$skip" == "y" ]; then
 	echo
-	echo "Steps 1-8 skipped"
+	echo "Steps 1-9 skipped"
 else
 	echo
 	echo "To begin, you will need to create a Project."
@@ -42,21 +42,25 @@ else
 	echo
 	echo "Step 4) enter a Product Name, scroll down and click Save button."
 	echo
+	echo "You will also need to enable to API that you intend to use for this Project/Product."
+	echo
+	echo "Step 5) go to the particular API console under https://console.developers.google.com/apis and click on the Enable button"
+	echo
 	echo "Once your project has been created, you will then need to set up a set of Client ID and Client Secret."
 	echo
-	echo "Step 5) visit https://console.developers.google.com/apis/credentials (should redirect to default project)"
+	echo "Step 6) visit https://console.developers.google.com/apis/credentials (should redirect to default project)"
 	echo
-	echo "Step 6) Click on Create credentials and select OAuth client ID"
+	echo "Step 7) Click on Create credentials and select OAuth client ID"
 	echo
-	echo "Step 7) Select Web application and add ${default_redirect_uri} to Authorized redirect URIs"
+	echo "Step 8) Select Web application and add ${default_redirect_uri} to Authorized redirect URIs"
 	echo
 	echo "Note: Don't forget to add ${default_redirect_uri} as the Redirect URI!!"
 	echo
-	echo "Step 8) Click Create"
+	echo "Step 9) Click Create"
 fi
 
 echo
-echo "Step 9) Once you have the credentials generated in your Browser window, enter those credentials here now."
+echo "Step 10) Once you have the credentials generated in your Browser window, enter those credentials here now."
 echo
 
 if [ $noconfig -eq 1 ]; then
@@ -111,7 +115,7 @@ access_permit_url="https://accounts.google.com/o/oauth2/auth?scope=${scope}&redi
 
 echo "If this is the first time using this credential set, you will need to manually visit the following URL (with a browser window) to permit (pre-authorize) the particular scope access for the token (note: token generation will follow this step.)"
 echo
-echo "Step 10) Visit this Access Permit URL (one time only):"
+echo "Step 11) Visit this Access Permit URL (one time only):"
 echo
 echo "${access_permit_url}"
 echo
@@ -120,7 +124,7 @@ echo -n "Visit the above URL now and Click 'Allow' to authorize the scope access
 read
 echo
 
-echo "Step 11) Please paste in the URL of the visited page"
+echo "Step 12) Please paste in the URL of the visited page"
 echo "(e.g. http://localhost/etc?code=4/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX): "
 echo -n "#: "
 read generated_redirect_uri
@@ -186,6 +190,8 @@ echo "curl -s 'https://www.googleapis.com/drive/v3/files/FILE_ID?access_token=${
 echo
 echo "We took the liberty to save the issued token into a config file, so you should also be able to access the drive list with the following command:"
 echo 'curl -s "https://www.googleapis.com/drive/v3/files?access_token=$(cat '${CONFIG_FILE}' | awk -F= '"'"'/TOKEN/{print $2}'"'"')"'
+echo
+echo "If these show commands show "Access Not Configured" error message, don't forget to go to the particular API console under https://console.developers.google.com/apis and click on the Enable button (Step 5)"
 echo
 echo ===================================================================
 echo

@@ -99,13 +99,13 @@ CLIENT_SECRET=$client_secret" > "${CONFIG_FILE}"
 
 echo '=================================================='
 echo
-echo "We will now need to assemble the URL that will be used to generate an access code."
+echo "We will now need to assemble the URL that will be used to generate an authorization code."
 echo
 echo "-You will also have to visit this URL through a browser"
 echo
-echo "-The access code will then be passed into another request to generate the access token."
+echo "-The authorization code will then be passed into another request to generate the access token."
 echo
-echo "-This access code CANNOT be used to perform API requests."
+echo "-This authorization code CANNOT be used to perform API requests."
 echo
 
 scope=$(       echo $default_scope        | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
@@ -132,18 +132,18 @@ code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
 
 if [ -z "$(echo $code | grep 4/ )" ]; then
 	echo
-	echo "ERROR: There was an issue with retrieving the access code. Please rerun the script with a new set of credentials."
+	echo "ERROR: There was an issue with retrieving the authorization code. Please rerun the script with a new set of credentials."
 	echo
 	exit
 fi
 
 echo
-echo "Complete: Code acquired."
+echo "Complete: Authorization Code acquired."
 echo
-echo "Code: ${code}"
+echo "Authorization Code: ${code}"
 echo
 
-echo "Using the code above, we will now assemble the URL that will be used to lease a Google Access Token.  Typically, the access tokens last an hour (3600 seconds)."
+echo "Using the authorization code above, we will now assemble the URL that will be used to lease a Google Access Token.  Typically, the access tokens last an hour (3600 seconds)."
 echo
 echo -n "Hit Enter when ready: "
 read

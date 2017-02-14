@@ -42,7 +42,7 @@ else
 	echo
 	echo "Step 4) enter a Product Name, scroll down and click Save button."
 	echo
-	echo "You will also need to enable to API that you intend to use for this Project/Product."
+	echo "You will also need to enable the API that you intend to use for this Project/Product."
 	echo
 	echo "Step 5) go to the particular API console under https://console.developers.google.com/apis and click on the Enable button"
 	echo

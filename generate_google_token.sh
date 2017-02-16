@@ -173,7 +173,7 @@ if [ $(echo $token | wc -c ) -lt 30 ]; then
 	echo
 	exit
 fi
-echo "TOKEN=${token}" >> "${CONFIG_FILE}"
+echo "ACCESS_TOKEN=${token}" >> "${CONFIG_FILE}"
 
 echo ===================================================================
 echo
@@ -200,7 +200,7 @@ echo "To access a file from Google Drive, issue the drive list command above and
 echo "curl -s 'https://www.googleapis.com/drive/v3/files/FILE_ID?access_token=${token}&alt=media' -L"
 echo
 echo "We took the liberty to save the issued token into a config file, so you should also be able to access the drive list with the following command:"
-echo 'curl -s "https://www.googleapis.com/drive/v3/files?access_token=$(cat '${CONFIG_FILE}' | awk -F= '"'"'/TOKEN/{print $2}'"'"')"'
+echo 'curl -s "https://www.googleapis.com/drive/v3/files?access_token=$(cat '${CONFIG_FILE}' | awk -F= '"'"'/ACCESS_TOKEN/{print $2}'"'"')"'
 echo
 echo "If these show commands show "Access Not Configured" error message, don't forget to go to the particular API console under https://console.developers.google.com/apis and click on the Enable button (Step 5)"
 echo

@@ -112,7 +112,7 @@ echo
 scope=$(       echo $default_scope        | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
 redirect_uri=$(echo $default_redirect_uri | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
 
-access_permit_url="https://accounts.google.com/o/oauth2/auth?scope=${scope}&redirect_uri=${redirect_uri}&response_type=code&client_id=${client_id}"
+access_permit_url="https://accounts.google.com/o/oauth2/auth?scope=${scope}&redirect_uri=${redirect_uri}&response_type=code&client_id=${client_id}&access_type=offline&approval_prompt=force"
 
 echo "If this is the first time using this credential set, you will need to manually visit the following URL (with a browser window) to permit (pre-authorize) the particular scope access for the token (note: token generation will follow this step.)"
 echo
@@ -165,6 +165,7 @@ echo
 echo "Request output:"
 curl -s -H "Content-Type: application/x-www-form-urlencoded" -d "code=${code}&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&grant_type=authorization_code" "https://accounts.google.com/o/oauth2/token" | tee "${LOG_FILE}"
 access_token=$(cat "${LOG_FILE}" | jq -r .access_token)
+refresh_token=$(cat "${LOG_FILE}" | jq -r .refresh_token)
 echo
 echo
 
@@ -174,6 +175,10 @@ if [ $(echo $access_token | wc -c ) -lt 30 ]; then
 	exit
 fi
 echo "ACCESS_TOKEN=${access_token}" >> "${CONFIG_FILE}"
+
+if [ ! -z "$refresh_token" ]; then
+	echo "REFRESH_TOKEN=${refresh_token}" >> "${CONFIG_FILE}"
+fi
 
 echo ===================================================================
 echo

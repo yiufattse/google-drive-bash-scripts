@@ -1,6 +1,6 @@
 #! /bin/bash
 
-token=$(cat "${HOME}/.google_token_config" | awk -F= '/TOKEN/{print $2}')
+token=$(cat "${HOME}/.google_token_config" | awk -F= '/ACCESS_TOKEN/{print $2}')
 
 output=$(curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$token")
 scope=$(echo "${output}" | jq -r .scope)

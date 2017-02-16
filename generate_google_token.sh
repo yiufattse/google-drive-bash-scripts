@@ -11,7 +11,7 @@ if [ -f "${CONFIG_FILE}" ]; then
 	config_client_id=$(cat "${CONFIG_FILE}" | awk -F= '/CLIENT_ID/{print $2}')
 	config_client_secret=$(cat "${CONFIG_FILE}" | awk -F= '/CLIENT_SECRET/{print $2}')
 	config_code=$(cat "${CONFIG_FILE}" | awk -F= '/CODE/{print $2}')
-	config_token=$(cat "${CONFIG_FILE}" | awk -F= '/TOKEN/{print $2}')
+	config_access_token=$(cat "${CONFIG_FILE}" | awk -F= '/ACCESS_TOKEN/{print $2}')
 	noconfig=0
 fi
 

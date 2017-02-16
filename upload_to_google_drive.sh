@@ -14,20 +14,20 @@ fi
 file_name=$( basename "${file_path}" )
 file_size=$( stat -c %s "${file_path}" )
 
-token=$(cat /home/yiu/.google_token_config | awk -F= '/TOKEN/{print $2}')
+access_token=$(cat /home/yiu/.google_token_config | awk -F= '/ACCESS_TOKEN/{print $2}')
 
 echo 1
-scope=$(curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$token" | jq -r .scope)
+scope=$(curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$access_token" | jq -r .scope)
 
 if [ "${scope}" != "https://www.googleapis.com/auth/drive" ]; then
-	echo "There's an an issue with the validity of the token.  Please check the token in the cofig file ($HOME/.google_token_config)"
+	echo "There's an an issue with the validity of the access token.  Please check the access token in the cofig file ($HOME/.google_token_config)"
 	exit
 fi
 
 metadata_content='{"title": "'"$file_name"'"}';
 metadata_size=$(echo -n "${metadata_content}" | wc -c)
 
-upload_url=$( curl "https://www.googleapis.com/upload/drive/v2/files?access_token=${token}&uploadType=resumable" \
+upload_url=$( curl "https://www.googleapis.com/upload/drive/v2/files?access_token=${access_token}&uploadType=resumable" \
 	-XPOST  \
 	-H 'Content-Type: application/json; charset=UTF-8' \
 	-H "Content-Length: ${metadata_size}" \

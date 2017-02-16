@@ -9,4 +9,7 @@ output=$(curl -s \
 -H 'Content-Type: application/x-www-form-urlencoded' \
 -d "client_id=${client_id}&client_secret=${client_secret}&refresh_token=${refresh_token}&grant_type=refresh_token" )
 
+access_token=$( echo $output | jq -r .access_token)
+sed -i "s|^ACCESS_TOKEN=.*|ACCESS_TOKEN=${access_token}|" $HOME/.google_token_config
+
 echo $output | jq .

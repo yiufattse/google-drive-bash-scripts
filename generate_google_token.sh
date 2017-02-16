@@ -164,28 +164,28 @@ echo "Requesting Token..."
 echo
 echo "Request output:"
 curl -s -H "Content-Type: application/x-www-form-urlencoded" -d "code=${code}&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&grant_type=authorization_code" "https://accounts.google.com/o/oauth2/token" | tee "${LOG_FILE}"
-token=$(cat "${LOG_FILE}" | jq -r .access_token)
+access_token=$(cat "${LOG_FILE}" | jq -r .access_token)
 echo
 echo
 
-if [ $(echo $token | wc -c ) -lt 30 ]; then
+if [ $(echo $access_token | wc -c ) -lt 30 ]; then
 	echo "ERROR: There was an issue acquiring the access token. Please rerun the script with a new set of credentials."
 	echo
 	exit
 fi
-echo "ACCESS_TOKEN=${token}" >> "${CONFIG_FILE}"
+echo "ACCESS_TOKEN=${access_token}" >> "${CONFIG_FILE}"
 
 echo ===================================================================
 echo
-echo "Your Access Token: $token"
+echo "Your Access Token: $access_token"
 echo
 echo ===================================================================
 
 echo
 echo "Output of Token Info:"
 echo
-echo "curl -s 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$token'"
-curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$token"
+echo "curl -s 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$access_token'"
+curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$access_token"
 echo
 
 echo ===================================================================
@@ -193,13 +193,13 @@ echo "Sample Uses:"
 echo
 
 echo "To access drive list, issue the following command"
-echo "curl -s 'https://www.googleapis.com/drive/v3/files?access_token=${token}'"
+echo "curl -s 'https://www.googleapis.com/drive/v3/files?access_token=${access_token}'"
 echo
 
 echo "To access a file from Google Drive, issue the drive list command above and copy down the FILE_ID and replace it into the following URL and run the command: "
-echo "curl -s 'https://www.googleapis.com/drive/v3/files/FILE_ID?access_token=${token}&alt=media' -L"
+echo "curl -s 'https://www.googleapis.com/drive/v3/files/FILE_ID?access_token=${access_token}&alt=media' -L"
 echo
-echo "We took the liberty to save the issued token into a config file, so you should also be able to access the drive list with the following command:"
+echo "We took the liberty to save the issued access token into a config file, so you should also be able to access the drive list with the following command:"
 echo 'curl -s "https://www.googleapis.com/drive/v3/files?access_token=$(cat '${CONFIG_FILE}' | awk -F= '"'"'/ACCESS_TOKEN/{print $2}'"'"')"'
 echo
 echo "If these show commands show "Access Not Configured" error message, don't forget to go to the particular API console under https://console.developers.google.com/apis and click on the Enable button (Step 5)"

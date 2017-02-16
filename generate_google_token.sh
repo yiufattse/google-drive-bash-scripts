@@ -10,6 +10,7 @@ noconfig=1
 if [ -f "${CONFIG_FILE}" ]; then
 	config_client_id=$(cat "${CONFIG_FILE}" | awk -F= '/CLIENT_ID/{print $2}')
 	config_client_secret=$(cat "${CONFIG_FILE}" | awk -F= '/CLIENT_SECRET/{print $2}')
+	config_code=$(cat "${CONFIG_FILE}" | awk -F= '/CODE/{print $2}')
 	config_token=$(cat "${CONFIG_FILE}" | awk -F= '/TOKEN/{print $2}')
 	noconfig=0
 fi
@@ -126,13 +127,23 @@ echo
 
 echo "Step 12) Please paste in the URL of the visited page"
 echo "(e.g. http://localhost/etc?code=4/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX): "
-echo -n "#: "
-read generated_redirect_uri
-code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
+if [ $noconfig -eq 1 ]; then
+	echo -n "#: "
+	read generated_redirect_uri
+	code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
+else
+	echo -n "# [http://localhost/etc?code=[${config_code}]: "
+	read generated_redirect_uri
+	code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
+	if [ -z "$generated_redirect_uri" ]; then
+		code="${config_code}"
+	fi
+fi
+echo "CODE=${code}" >> "${CONFIG_FILE}"
 
 if [ -z "$(echo $code | grep 4/ )" ]; then
 	echo
-	echo "ERROR: There was an issue with retrieving the authorization code. Please rerun the script with a new set of credentials."
+	echo "ERROR: There was an issue with retrieving the authorization code. There was likely an issue with the Authorization Code.  Please generate another one and rerun the script with the new code."
 	echo
 	exit
 fi

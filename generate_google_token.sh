@@ -132,7 +132,7 @@ if [ $noconfig -eq 1 ]; then
 	read generated_redirect_uri
 	code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
 else
-	echo -n "# [http://localhost/etc?code=[${config_code}]: "
+	echo -n "# [http://localhost/etc?code=${config_code}]: "
 	read generated_redirect_uri
 	code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
 	if [ -z "$generated_redirect_uri" ]; then

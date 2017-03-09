@@ -14,7 +14,7 @@ fi
 file_name=$( basename "${file_path}" )
 file_size=$( stat -c %s "${file_path}" )
 
-access_token=$(cat /home/yiu/.google_token_config | awk -F= '/ACCESS_TOKEN/{print $2}')
+access_token=$(cat ~/.google_token_config | awk -F= '/ACCESS_TOKEN/{print $2}')
 
 echo 1
 scope=$(curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$access_token" | jq -r .scope)

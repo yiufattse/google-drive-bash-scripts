@@ -21,6 +21,8 @@ if [ ! -f "${GOOGLE_TOKEN_CONFIG}" ]; then
 fi
 access_token=$(cat "${GOOGLE_TOKEN_CONFIG}" | awk -F= '/ACCESS_TOKEN/{print $2}')
 
+date=$(date +%Y%m%d%H%M)
+
 scope=$(curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$access_token" | jq -r .scope)
 
 if [ "${scope}" != "https://www.googleapis.com/auth/drive" ]; then
@@ -42,4 +44,4 @@ curl "${upload_url}" \
 	-XPUT \
 	-H 'Content-Type: application/octet-stream' \
 	-H "Content-Length: ${file_size}" \
-	--data-binary "@${file_path}"
+	--data-binary "@${file_path}" > upload_${date}.json

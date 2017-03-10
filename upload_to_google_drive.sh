@@ -40,8 +40,11 @@ upload_url=$( curl "https://www.googleapis.com/upload/drive/v2/files?access_toke
 	-d "${metadata_content}" \
 	-v 2>&1 | awk '/Location/{print $3}' | sed -e 's|\r$||' )
 
+UPLOAD_OUTPUT_JSON="upload_${date}.json"
 curl "${upload_url}" \
 	-XPUT \
 	-H 'Content-Type: application/octet-stream' \
 	-H "Content-Length: ${file_size}" \
-	--data-binary "@${file_path}" > upload_${date}.json
+	--data-binary "@${file_path}" > "${UPLOAD_OUTPUT_JSON}"
+
+echo "${UPLOAD_OUTPUT_JSON}" > last_upload_json.txt

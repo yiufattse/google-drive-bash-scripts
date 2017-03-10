@@ -14,7 +14,12 @@ fi
 file_name=$( basename "${file_path}" )
 file_size=$( stat -c %s "${file_path}" )
 
-access_token=$(cat ~/.google_token_config | awk -F= '/ACCESS_TOKEN/{print $2}')
+GOOGLE_TOKEN_CONFIG=~/.google_token_config
+if [ ! -f "${GOOGLE_TOKEN_CONFIG}" ]; then
+	echo "The Google Access Token Config file was not found.  Please run generate_google_token.sh and check the contents of the file ${GOOGLE_TOKEN_CONFIG}"
+	exit
+fi
+access_token=$(cat "${GOOGLE_TOKEN_CONFIG}" | awk -F= '/ACCESS_TOKEN/{print $2}')
 
 echo 1
 scope=$(curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$access_token" | jq -r .scope)

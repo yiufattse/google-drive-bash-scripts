@@ -21,7 +21,6 @@ if [ ! -f "${GOOGLE_TOKEN_CONFIG}" ]; then
 fi
 access_token=$(cat "${GOOGLE_TOKEN_CONFIG}" | awk -F= '/ACCESS_TOKEN/{print $2}')
 
-echo 1
 scope=$(curl -s "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=$access_token" | jq -r .scope)
 
 if [ "${scope}" != "https://www.googleapis.com/auth/drive" ]; then

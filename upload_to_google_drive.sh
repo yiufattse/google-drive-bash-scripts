@@ -42,5 +42,4 @@ curl "${upload_url}" \
 	-XPUT \
 	-H 'Content-Type: application/octet-stream' \
 	-H "Content-Length: ${file_size}" \
-	--data-binary "@${file_path}" \
-	--progress-bar
+	--data-binary "@${file_path}"

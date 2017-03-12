@@ -1,5 +1,7 @@
 #! /bin/bash
 
+SCRIPT_DIR=$(dirname $0)
+
 if [ -z "$1" ]; then
 	echo No param specified.  Please specify a fileId.
 	exit
@@ -10,7 +12,7 @@ access_token=$(cat "${HOME}/.google_token_config" | awk -F= '/ACCESS_TOKEN/{prin
 
 output=$(curl -s "https://www.googleapis.com/drive/v2/files/$file_id/properties?access_token=$access_token" | jq .items)
 
-title="$(./view_file_details.sh ${file_id} | jq -r .title)"
+title="$($SCRIPT_DIR/view_file_details.sh ${file_id} | jq -r .title)"
 
 echo
 echo "title: ${title}"

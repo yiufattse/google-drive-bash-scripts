@@ -7,7 +7,9 @@ scope=$(echo "${output}" | jq -r .scope)
 expires_in=$(echo "${output}" | jq -r .expires_in)
 
 if [ "${scope}" != "https://www.googleapis.com/auth/drive" ]; then
-        echo "There's an an issue with the validity of the access token.  Please check the token in the cofig file ($HOME/.google_token_config)"
+        echo "There's an an issue with the validity of the access token.  Please check the token in the config file ($HOME/.google_token_config)"
+		echo
+		echo "Maybe, you can refresh the token with refresh_token.sh"
         exit
 fi
 

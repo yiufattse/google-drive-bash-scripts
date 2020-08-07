@@ -136,15 +136,16 @@ read
 echo
 
 echo "Step 12) Please take the URL from the location bar and then paste URL here"
-echo "(e.g. http://localhost/etc?code=4/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX): "
+echo "(e.g. http://localhost/etc?code=4/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&scope=https://www.googleapis.com/auth/yyyyy): "
+
 if [ $noconfig -eq 1 ]; then
 	echo -n "#: "
 	read generated_redirect_uri
-	code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
+	code=$(echo $generated_redirect_uri | sed -e 's|^.*code=\([^&]\+\)&.*|\1|')
 else
 	echo -n "# [http://localhost/etc?code=${config_code}]: "
 	read generated_redirect_uri
-	code=$(echo $generated_redirect_uri | sed -e 's|^.*=||')
+	code=$(echo $generated_redirect_uri | sed -e 's|^.*code=\([^&]\+\)&.*|\1|')
 	if [ -z "$generated_redirect_uri" ]; then
 		code="${config_code}"
 	fi

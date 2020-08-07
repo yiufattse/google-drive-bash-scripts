@@ -220,5 +220,7 @@ echo 'curl -s "https://www.googleapis.com/drive/v3/files?access_token=$(cat '${C
 echo
 echo "If these show commands show "Access Not Configured" error message, don't forget to go to the particular API console under https://console.developers.google.com/apis and click on the Enable button (Step 5)"
 echo
+echo "for Google Drive, you'd visit the Google Drive API Library (i.e. https://console.cloud.google.com/apis/library/drive.googleapis.com) and click Enable. Then, click on the project name and then click Open."
+echo
 echo ===================================================================
 echo

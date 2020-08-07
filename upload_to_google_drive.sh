@@ -38,7 +38,7 @@ upload_url=$( curl "https://www.googleapis.com/upload/drive/v2/files?access_toke
 	-H 'Content-Type: application/json; charset=UTF-8' \
 	-H "Content-Length: ${metadata_size}" \
 	-d "${metadata_content}" \
-	-v 2>&1 | awk '/Location/{print $3}' | sed -e 's|\r$||' )
+	-v 2>&1 | awk '/ocation:/{print $3}' | sed -e 's|\r$||' )
 
 UPLOAD_OUTPUT_JSON="upload_${date}.json"
 curl "${upload_url}" \

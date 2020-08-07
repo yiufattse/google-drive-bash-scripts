@@ -31,25 +31,23 @@ else
 	echo
 	echo "To begin, you will need to create a Project."
 	echo
-	echo "Step 1) visit https://console.developers.google.com/iam-admin/projects"
+	echo "Step 1) visit https://console.cloud.google.com/cloud-resource-manager"
 	echo
-	echo "Step 2) Click Create Project button, enter a Project Name and click Create button."
+	echo "Step 2) Click Create Project button, enter a Project Name (i.e. mythtv-file-sharing) and click Create button."
 	echo
 	echo "Once your project has been created, you will then need to set up a Product name."
 	echo
 	echo "To set up a Product name, go to the OAuth Consent screen:"
 	echo
-	echo "Step 3) visit https://console.developers.google.com/apis/credentials/consent"
+	echo "Step 3) visit https://console.cloud.google.com/apis/credentials/consent"
 	echo
-	echo "Step 4) enter a Product Name, scroll down and click Save button."
+	echo "Step 4) you should now be lead to the 'OAuth consent screen', you'd need to select External and then click Create"
 	echo
-	echo "You will also need to enable the API that you intend to use for this Project/Product."
+	echo "Step 5) In this second page of 'OAuth consent screen', enter a 'Application name' (i.e. mythtv-file-sharing), scroll down and click Save button."
 	echo
-	echo "Step 5) go to the particular API console under https://console.developers.google.com/apis and click on the Enable button"
+	echo "You will now need to set up a set of Client ID and Client Secret to be used with Project and Application."
 	echo
-	echo "Once your project has been created, you will then need to set up a set of Client ID and Client Secret."
-	echo
-	echo "Step 6) visit https://console.developers.google.com/apis/credentials (should redirect to default project)"
+	echo "Step 6) visit https://console.cloud.google.com/apis/credentials (should redirect to Credentials page of the default project)"
 	echo
 	echo "Step 7) Click on Create credentials and select OAuth client ID"
 	echo
@@ -106,7 +104,7 @@ echo "-You will also have to visit this URL through a browser"
 echo
 echo "-The authorization code will then be passed into another request to generate the access token."
 echo
-echo "-This authorization code CANNOT be used to perform API requests."
+echo "-This authorization code cannot be used to perform API requests and is only for generating the access token, which is used for API requests."
 echo
 
 scope=$(       echo $default_scope        | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
@@ -114,18 +112,30 @@ redirect_uri=$(echo $default_redirect_uri | sed -e 's|:|%3A|g' | sed -e 's|/|%2f
 
 access_permit_url="https://accounts.google.com/o/oauth2/auth?scope=${scope}&redirect_uri=${redirect_uri}&response_type=code&client_id=${client_id}&access_type=offline&approval_prompt=force"
 
-echo "If this is the first time using this credential set, you will need to manually visit the following URL (with a browser window) to permit (pre-authorize) the particular scope access for the token (note: token generation will follow this step.)"
+echo "If this is the first time using this credential set, you will need to manually visit the following URL (with a browser window) to permit (pre-authorize) the particular scope access for the token (note: token generation could only take place after this step is complete.)"
 echo
-echo "Step 11) Visit this Access Permit URL (one time only):"
+echo "Step 11) Visit this Access Permit URL with a browser (one time only):"
 echo
 echo "${access_permit_url}"
 echo
 
-echo -n "Visit the above URL now and Click 'Allow' to authorize the scope access of the token and hit Enter when done: "
+echo -n "Visit the above URL now and Click 'Allow' to authorize the scope access of the token and hit Enter when done."
+echo
+echo -n "-with a browser logged into multiple Google accounts, you will need to select the correct profile you want to connect to the Project/Application."
+echo
+echo -n "-with a browser like Firefox, you will see an error page 'This app isn't verified'. Here, you will need to click on the Advanced option (left) in order to proceed to Allow the authorization. Then click on newly revealed option 'Go to <project-name> (unsafe)'."
+echo
+echo -n "-then, the popup pane 'Grant <project-name> permission' would show up, please click 'Allow'"
+echo
+echo -n "-then, the next page 'Confirm your choices' would show up, click 'Allow' again"
+echo
+echo -n "-then, the confirmation page would disappear and the browser would be lead to a broken page.  Please don't close this page."
+echo
+echo -n ": "
 read
 echo
 
-echo "Step 12) Please paste in the URL of the visited page"
+echo "Step 12) Please take the URL from the location bar and then paste URL here"
 echo "(e.g. http://localhost/etc?code=4/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX): "
 if [ $noconfig -eq 1 ]; then
 	echo -n "#: "

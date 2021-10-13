@@ -1,6 +1,6 @@
 #! /bin/bash
 
-param="$1"
+JSON="${JSON:-}"
 
 access_token=$(cat "${HOME}/.google_token_config" | awk -F= '/ACCESS_TOKEN/{print $2}')
 
@@ -15,7 +15,7 @@ echo $items | jq -r '.[] | "\(.modifiedDate)%%%\(.parents[0].id)%%%\(.id)%%%\(.l
 
 	title_escaped=$( echo "$title" | sed -e 's|"|\\"|g' )
 
-	if [ ! -z "$param" ] && [ "$param"=="--json" ]; then
+	if [ ! -z "$JSON" ] && [ "$JSON" == 1 ]; then
 		line_json="{\"modifiedDate\": \"$modifiedDate\", \"parent_id\": \"$parent_id\", \"id\": \"$id\", \"trashed\": \"$trashed\", \"title\": \"$title_escaped\"}"
 		echo "$line_json" | jq .
 	else

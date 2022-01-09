@@ -5,6 +5,8 @@ if [ -z "$1" ]; then
 	exit
 fi
 
+UPLOAD_OUTPUT_JSON="${UPLOAD_OUTPUT_JSON:-}"
+
 file_path="$1"
 if [ ! -f "${file_path}" ]; then
 	echo The file in the param was not found.  Please specify a file that exists.
@@ -40,11 +42,18 @@ upload_url=$( curl "https://www.googleapis.com/upload/drive/v2/files?access_toke
 	-d "${metadata_content}" \
 	-v 2>&1 | awk '/ocation:/{print $3}' | sed -e 's|\r$||' )
 
-UPLOAD_OUTPUT_JSON="upload_${date}.json"
-curl "${upload_url}" \
-	-XPUT \
-	-H 'Content-Type: application/octet-stream' \
-	-H "Content-Length: ${file_size}" \
-	--data-binary "@${file_path}" > "${UPLOAD_OUTPUT_JSON}"
+if [ ! -z "$UPLOAD_OUTPUT_JSON" ]; then
+	curl "${upload_url}" \
+		-XPUT \
+		-H 'Content-Type: application/octet-stream' \
+		-H "Content-Length: ${file_size}" \
+		--data-binary "@${file_path}" > "${UPLOAD_OUTPUT_JSON}"
+else
+	curl "${upload_url}" \
+		-XPUT \
+		-H 'Content-Type: application/octet-stream' \
+		-H "Content-Length: ${file_size}" \
+		--data-binary "@${file_path}"
+fi
 
 echo "${UPLOAD_OUTPUT_JSON}" > last_upload_json.txt

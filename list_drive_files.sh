@@ -2,13 +2,22 @@
 
 JSON="${JSON:-}"
 subfolder_id="$1"
+COUNT_LIMIT="${COUNT_LIMIT:-}"
 
 access_token=$(cat "${HOME}/.google_token_config" | awk -F= '/ACCESS_TOKEN/{print $2}')
 
 if [ -z "${subfolder_id}" ]; then
-	items=$( curl -s "https://www.googleapis.com/drive/v2/files?access_token=$access_token" | jq .items )
+	url="https://www.googleapis.com/drive/v2/files?access_token=$access_token"
+	#if [ ! -z "${COUNT_LIMIT}" ]; then
+	#	url="${url}&maxResults=${COUNT_LIMIT}"
+	#fi
+	items=$( curl -s "$url" | jq .items )
 else
-	items=$( curl -s "https://www.googleapis.com/drive/v2/files?q='$subfolder_id'+in+parents&access_token=$access_token" | jq .items )
+	url="https://www.googleapis.com/drive/v2/files?q='$subfolder_id'+in+parents&access_token=$access_token"
+	if [ ! -z "${COUNT_LIMIT}" ]; then
+		url="${url}&maxResults=${COUNT_LIMIT}"
+	fi
+	items=$( curl -s "$url" | jq .items )
 fi
 
 echo $items | jq -r '.[] | "\(.modifiedDate)%%%\(.parents[0].id)%%%\(.id)%%%\(.labels.trashed)%%%\(.title)"' | while read line; do

@@ -8,10 +8,10 @@ default_redirect_uri="http://localhost/etc"
 
 noconfig=1
 if [ -f "${CONFIG_FILE}" ]; then
-	config_client_id=$(cat "${CONFIG_FILE}" | awk -F= '/CLIENT_ID/{print $2}')
-	config_client_secret=$(cat "${CONFIG_FILE}" | awk -F= '/CLIENT_SECRET/{print $2}')
-	config_code=$(cat "${CONFIG_FILE}" | awk -F= '/CODE/{print $2}')
-	config_access_token=$(cat "${CONFIG_FILE}" | awk -F= '/ACCESS_TOKEN/{print $2}')
+	config_client_id=$(cat "${CONFIG_FILE}"     | awk -F= '/CLIENT_ID/{print $2}'     | sed -e 's|\ $||g' )
+	config_client_secret=$(cat "${CONFIG_FILE}" | awk -F= '/CLIENT_SECRET/{print $2}' | sed -e 's|\ $||g' )
+	config_code=$(cat "${CONFIG_FILE}"          | awk -F= '/CODE/{print $2}'          | sed -e 's|\ $||g' )
+	config_access_token=$(cat "${CONFIG_FILE}"  | awk -F= '/ACCESS_TOKEN/{print $2}'  | sed -e 's|\ $||g' )
 	noconfig=0
 fi
 
@@ -93,8 +93,9 @@ echo -n "Client Secret: "
 echo $client_secret
 echo
 
-echo "CLIENT_ID=$client_id
-CLIENT_SECRET=$client_secret" > "${CONFIG_FILE}"
+> "${CONFIG_FILE}"
+echo "CLIENT_ID=$client_id"         | sed -e 's|\ $||g' >> "${CONFIG_FILE}"
+echo "CLIENT_SECRET=$client_secret" | sed -e 's|\ $||g' >> "${CONFIG_FILE}"
 
 echo '=================================================='
 echo
@@ -150,7 +151,7 @@ else
 		code="${config_code}"
 	fi
 fi
-echo "CODE=${code}" >> "${CONFIG_FILE}"
+echo "CODE=${code}" | sed -e 's|\ $||g' >> "${CONFIG_FILE}"
 
 if [ -z "$(echo $code | grep 4/ )" ]; then
 	echo

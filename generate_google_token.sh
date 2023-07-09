@@ -108,7 +108,16 @@ echo
 echo "-This authorization code cannot be used to perform API requests and is only for generating the access token, which is used for API requests."
 echo
 
-scope=$(       echo $default_scope        | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
+
+echo '=================================================='
+echo
+echo "Let's now choose a scope that you want the token to work for."
+echo
+echo -n "scope [${default_scope}]: "
+read scope_answer
+scope_answer=${scope_answer:-$default_scope}
+
+scope=$(       echo $scope_answer         | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
 redirect_uri=$(echo $default_redirect_uri | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
 
 access_permit_url="https://accounts.google.com/o/oauth2/auth?scope=${scope}&redirect_uri=${redirect_uri}&response_type=code&client_id=${client_id}&access_type=offline&approval_prompt=force"

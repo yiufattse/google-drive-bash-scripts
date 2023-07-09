@@ -219,16 +219,19 @@ echo ===================================================================
 echo "Sample Uses:"
 echo
 
-echo "To access drive list, issue the following command"
-echo "curl -s 'https://www.googleapis.com/drive/v3/files?access_token=${access_token}'"
-echo
+if [ "${scope}" == "${default_scope}" ]; then
+	echo "To access drive list, issue the following command"
+	echo "curl -s 'https://www.googleapis.com/drive/v3/files?access_token=${access_token}'"
+	echo
 
-echo "To access a file from Google Drive, issue the drive list command above and copy down the FILE_ID and replace it into the following URL and run the command: "
-echo "curl -s 'https://www.googleapis.com/drive/v3/files/FILE_ID?access_token=${access_token}&alt=media' -L"
-echo
-echo "We took the liberty to save the issued access token into a config file, so you should also be able to access the drive list with the following command:"
-echo 'curl -s "https://www.googleapis.com/drive/v3/files?access_token=$(cat '${CONFIG_FILE}' | awk -F= '"'"'/ACCESS_TOKEN/{print $2}'"'"')"'
-echo
+	echo "To access a file from Google Drive, issue the drive list command above and copy down the FILE_ID and replace it into the following URL and run the command: "
+	echo "curl -s 'https://www.googleapis.com/drive/v3/files/FILE_ID?access_token=${access_token}&alt=media' -L"
+	echo
+	echo "We took the liberty to save the issued access token into a config file, so you should also be able to access the drive list with the following command:"
+	echo 'curl -s "https://www.googleapis.com/drive/v3/files?access_token=$(cat '${CONFIG_FILE}' | awk -F= '"'"'/ACCESS_TOKEN/{print $2}'"'"')"'
+	echo
+fi
+
 echo "If these show commands show "Access Not Configured" error message, don't forget to go to the particular API console under https://console.developers.google.com/apis and click on the Enable button (Step 5)"
 echo
 echo "for Google Drive, you'd visit the Google Drive API Library (i.e. https://console.cloud.google.com/apis/library/drive.googleapis.com) and click Enable. Then, click on the project name and then click Open."

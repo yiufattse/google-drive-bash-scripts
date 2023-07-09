@@ -117,7 +117,7 @@ echo -n "scope [${default_scope}]: "
 read scope_answer
 scope_answer=${scope_answer:-$default_scope}
 
-scope=$(       echo $scope_answer         | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
+scope=$(       echo $scope_answer         | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g' | sed -e 's|\ |%20|g')
 redirect_uri=$(echo $default_redirect_uri | sed -e 's|:|%3A|g' | sed -e 's|/|%2f|g')
 
 access_permit_url="https://accounts.google.com/o/oauth2/auth?scope=${scope}&redirect_uri=${redirect_uri}&response_type=code&client_id=${client_id}&access_type=offline&approval_prompt=force"

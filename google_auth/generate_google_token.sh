@@ -20,7 +20,7 @@ echo '|'
 echo '| Google Token Generator'
 echo '=================================================='
 echo
-echo "Step 0) If you already have a Project, Client ID and Client Secret, skip to Step 10."
+echo "Step 0) If you already have a Project, Client ID and Client Secret, skip to Step 17."
 echo
 echo -n "Skip (y/n) [n]: "
 read skip
@@ -35,31 +35,51 @@ else
 	echo
 	echo "Step 2) Click Create Project button, enter a Project Name (i.e. mythtv-file-sharing) and click Create button."
 	echo
-	echo "Once your project has been created, you will then need to set up a Product name."
+	echo "Once your project has been created, you may see a notification about the project creation. You will now need to select it so you can set up an App name for this project. Find this new project and select it first."
 	echo
-	echo "To set up a Product name, go to the OAuth Consent screen:"
+	echo "Once this new project is selected, go to the OAuth Consent screen:"
 	echo
 	echo "Step 3) visit https://console.cloud.google.com/apis/credentials/consent"
 	echo
 	echo "Step 4) you should now be lead to the 'OAuth consent screen', you'd need to select External and then click Create"
 	echo
-	echo "Step 5) In this second page of 'OAuth consent screen', enter a 'Application name' (i.e. mythtv-file-sharing), scroll down and click Save button."
+	echo "Step 5) In this second page of 'OAuth consent screen', enter a 'App name' (i.e. mythtv-file-sharing)"
 	echo
-	echo "You will now need to set up a set of Client ID and Client Secret to be used with Project and Application."
+	echo "Step 6) Enter the user support email address in the field right below App Name"
 	echo
-	echo "Step 6) visit https://console.cloud.google.com/apis/credentials (should redirect to Credentials page of the default project)"
+	echo "Step 7) Then scroll down and enter the Developer contact info email address in the field right above the Save and Continue button"
 	echo
-	echo "Step 7) Click on Create credentials and select OAuth client ID"
+	echo "Step 8) Now click Save and Continue button."
 	echo
-	echo "Step 8) Select Web application and add ${default_redirect_uri} to Authorized redirect URIs"
+	echo "Once you've clicked Save and Continue button, you will see that you've left the OAuth consent screen in the Edit app registration wizard and have moved onto step 2 (Scopes). You don't need to add a Scope manually. So you can proceed onto the next step in the wizard."
+	echo
+	echo "Step 9) Make no changes to Scopes and click Save and Continue button to arrive in the Test users screen."
+	echo
+	echo "Now that you have reached the Test users screen, enter the email address of the Google account that you will use as your (first) test user to test the App with. You will need to add test user(s) so they can be allowed to be issued the credentials to interact with the resources of the App. Note that test users are allowed to interact with the App resources before the App is published."
+	echo
+	echo "Step 10) Click Add Users"
+	echo
+	echo "Step 11) In the pane that opened, type in the email address of the test user and then click Add."
+	echo
+	echo "Now that you've left the Add users pane and returned to Test users screen,"
+	echo
+	echo "Step 12) click Save and Continue."
+	echo
+	echo "The next steps involves setting up a set of Client ID and Client Secret to be used with Project and Application."
+	echo
+	echo "Step 13) visit https://console.cloud.google.com/apis/credentials (should redirect to Credentials page of the default project)"
+	echo
+	echo "Step 14) Click on Create credentials and select OAuth client ID"
+	echo
+	echo "Step 15) Select Web application and add ${default_redirect_uri} to Authorized redirect URIs"
 	echo
 	echo "Note: Don't forget to add ${default_redirect_uri} as the Redirect URI!!"
 	echo
-	echo "Step 9) Click Create"
+	echo "Step 16) Click Create"
 fi
 
 echo
-echo "Step 10) Once you have the credentials generated in your Browser window, enter those credentials here now."
+echo "Step 17) Once you have the credentials generated in your Browser window, enter those credentials here now."
 echo
 
 if [ $noconfig -eq 1 ]; then
@@ -81,7 +101,7 @@ else
 		client_secret="${config_client_secret}"
 	fi
 fi
-echo 
+echo
 
 echo '=================================================='
 echo
@@ -122,30 +142,38 @@ redirect_uri=$(echo $default_redirect_uri | sed -e 's|:|%3A|g' | sed -e 's|/|%2f
 
 access_permit_url="https://accounts.google.com/o/oauth2/auth?scope=${scope}&redirect_uri=${redirect_uri}&response_type=code&client_id=${client_id}&access_type=offline&approval_prompt=force"
 
+echo
 echo "If this is the first time using this credential set, you will need to manually visit the following URL (with a browser window) to permit (pre-authorize) the particular scope access for the token (note: token generation could only take place after this step is complete.)"
 echo
-echo "Step 11) Visit this Access Permit URL with a browser (one time only):"
+echo "Step 18) Visit this Access Permit URL with a browser (one time only):"
 echo
 echo "${access_permit_url}"
 echo
 
-echo -n "Visit the above URL now and Click 'Allow' to authorize the scope access of the token and hit Enter when done."
+echo "Visit the above URL now and Click 'Allow' to authorize the scope access of the token and hit Enter when done."
 echo
-echo -n "-with a browser logged into multiple Google accounts, you will need to select the correct profile you want to connect to the Project/Application."
+echo "-with a browser logged into multiple Google accounts, you will need to select the correct profile you want to connect to the Project/Application."
 echo
-echo -n "-with a browser like Firefox, you will see an error page 'This app isn't verified'. Here, you will need to click on the Advanced option (left) in order to proceed to Allow the authorization. Then click on newly revealed option 'Go to <project-name> (unsafe)'."
+echo "-with a browser like Firefox, you will see an error page 'This app isn't verified'. Here, you will need to click \"Continue\" button on the left hand side (the option might also be called \"Advanced\") in order to proceed to Allow the authorization. Then click on newly revealed option 'Go to <project-name> (unsafe)'."
 echo
-echo -n "-then, the popup pane 'Grant <project-name> permission' would show up, please click 'Allow'"
+echo "-the following screen will say that the app wants access to your Google Account and to make sure you trust the app. Click Continue here."
 echo
-echo -n "-then, the next page 'Confirm your choices' would show up, click 'Allow' again"
+echo "(previous versions of Firefox/Google Chrome may appear more like the following)"
 echo
-echo -n "-then, the confirmation page would disappear and the browser would be lead to a broken page.  Please don't close this page."
+echo "-then, the popup pane 'Grant <project-name> permission' would show up, please click 'Allow'"
+echo
+echo "-then, the next page 'Confirm your choices' would show up, click 'Allow' again"
+echo
+echo
+echo "After confirming the access properly, by the end this will happen."
+echo
+echo -n "-after allowing the access, the confirmation page would disappear and the browser would be lead to what would appear as a broken page (In firefox, the page would say \"Unable to connect.\")  !!!Please don't close this page.!!!"
 echo
 echo -n ": "
 read
 echo
 
-echo "Step 12) Please take the URL from the location bar and then paste URL here"
+echo "Step 19) Please take the URL from the location bar and then paste URL here"
 echo "(e.g. http://localhost/etc?code=4/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&scope=https://www.googleapis.com/auth/yyyyy): "
 
 if [ $noconfig -eq 1 ]; then
@@ -232,7 +260,7 @@ if [ "${scope}" == "${default_scope}" ]; then
 	echo
 fi
 
-echo "If these show commands show "Access Not Configured" error message, don't forget to go to the particular API console under https://console.developers.google.com/apis and click on the Enable button (Step 5)"
+echo "If the above commands give "Access Not Configured" error message, try to go through the above steps again. If all else fails, visit the IAM & Admin Settings page and Shut Down this App/Project and start over again."
 echo
 echo "for Google Drive, you'd visit the Google Drive API Library (i.e. https://console.cloud.google.com/apis/library/drive.googleapis.com) and click Enable. Then, click on the project name and then click Open."
 echo

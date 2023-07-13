@@ -26,7 +26,7 @@ echo -n "Skip (y/n) [n]: "
 read skip
 if [ "$skip" == "y" ]; then
 	echo
-	echo "Steps 1-9 skipped"
+	echo "Steps 1-16 skipped"
 else
 	echo
 	echo "To begin, you will need to create a Project."
